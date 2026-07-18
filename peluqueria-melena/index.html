@@ -1,0 +1,971 @@
+<meta charset="UTF-8">
+<title>Melena — Estudio de Peluquería</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Melena, estudio de peluquería en Elda (Alicante). Corte, color, mechas y tratamiento capilar — reserva tu cita online, elige día y hora sin llamar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #FFFFFF;
+    --paper-raised: #F6F6F6;
+    --ink: #0A0A0A;
+    --ink-soft: #6E6E6E;
+    --line: rgba(10,10,10,0.15);
+    --focus: #0A0A0A;
+    --accent: #0A0A0A;
+    --accent-hover: #2A2A2A;
+    --danger: #DC2626;
+    --available: #2F7A4D;
+    --radius-sm: 12px;
+    --radius-md: 20px;
+    --radius-lg: 28px;
+    --radius-pill: 999px;
+    --shadow-soft: 0 2px 8px rgba(10,10,10,0.06), 0 16px 40px rgba(10,10,10,0.10);
+    --font-display: "Playfair Display", Georgia, "Iowan Old Style", serif;
+    --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color-scheme: light;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
+  body{ margin:0; }
+
+  .site{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .display{ font-family: var(--font-display); text-wrap: balance; }
+  .tab-nums{ font-variant-numeric: tabular-nums; }
+  .eyebrow{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.16em; color:var(--ink-soft); font-weight:600; }
+
+  a{ color: inherit; }
+  button, input{ font-family: inherit; color: inherit; }
+  :focus-visible{ outline: 2px solid var(--focus); outline-offset: 3px; }
+
+  .wrap{ max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Header ---------- */
+  header.top{
+    position: sticky; top: 0; z-index: 30;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .top-row{ display:flex; align-items:center; justify-content:space-between; padding:16px 0; gap:20px; }
+  .brand{ display:flex; align-items:baseline; gap:10px; text-decoration:none; }
+  .brand .mark{ font-family: var(--font-display); font-size:1.5rem; font-weight:700; }
+  .brand .tag{ font-size:0.66rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.13em; }
+
+  nav.links{ display:flex; gap:30px; }
+  nav.links a{
+    position:relative; text-decoration:none; font-size:0.85rem; color:var(--ink-soft);
+    padding-bottom:4px;
+  }
+  nav.links a::after{
+    content:""; position:absolute; left:0; right:100%; bottom:-1px; height:1.5px; background:var(--ink);
+    transition: right .22s ease;
+  }
+  nav.links a:hover{ color:var(--ink); }
+  nav.links a:hover::after, nav.links a.current::after{ right:0; }
+  nav.links a.current{ color:var(--ink); }
+  @media (max-width: 720px){ nav.links{ display:none; } }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    border: 1.5px solid var(--accent); color: var(--accent); background: transparent;
+    border-radius: var(--radius-pill);
+    padding: 11px 22px; font-size: 0.86rem; font-weight:600; text-decoration:none; cursor:pointer;
+    transition: background .16s ease, color .16s ease, border-color .16s ease, transform .16s ease, box-shadow .16s ease;
+    white-space: nowrap;
+  }
+  .btn:active{ transform: scale(0.97); }
+  .btn:hover{ background: var(--accent); color: #fff; }
+  .btn.solid{ background: var(--accent); color: #fff; box-shadow: 0 8px 20px rgba(10,10,10,0.22); }
+  .btn.solid:hover{ background: var(--accent-hover); border-color: var(--accent-hover); }
+  .btn:disabled{ opacity:0.4; cursor:not-allowed; box-shadow:none; }
+  .btn:disabled:hover{ background:transparent; color:var(--accent); }
+
+  .hamburger{
+    display:none; width:40px; height:40px; border:1px solid var(--line); background:var(--paper-raised);
+    border-radius:50%;
+    align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;
+  }
+  .hamburger svg{ width:18px; height:18px; }
+  @media (max-width:720px){ .hamburger{ display:flex; } }
+
+  #mobile-menu{
+    position:fixed; inset:0; z-index:40; background:var(--paper);
+    display:flex; flex-direction:column;
+    transform: translateY(-100%); transition: transform .32s ease;
+  }
+  #mobile-menu.open{ transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce){ #mobile-menu{ transition:none; } }
+  .mm-top{ display:flex; justify-content:space-between; align-items:center; padding:16px 24px; border-bottom:1px solid var(--line); }
+  .mm-close{ width:40px; height:40px; border:1px solid var(--line); border-radius:50%; background:var(--paper-raised); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .mm-close svg{ width:16px; height:16px; }
+  .mm-links{ display:flex; flex-direction:column; padding: 12px 24px; gap:2px; }
+  .mm-links a{
+    text-decoration:none; font-family: var(--font-display); font-size:2rem; color:var(--ink);
+    padding: 16px 0; border-bottom:1px solid var(--line);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{ padding: 88px 0 64px; display:grid; grid-template-columns: 1.3fr 1fr; gap:48px; align-items:end; }
+  @media (max-width: 800px){ .hero{ grid-template-columns:1fr; padding-top:56px; } }
+  .hero h1{ font-size: clamp(2.5rem, 5.6vw, 4.1rem); line-height:1.04; margin:14px 0 20px; font-weight:600; }
+  .hero h1 em{ font-style: italic; color: var(--accent); font-weight:500; }
+  .hero p.lede{ font-size:1.08rem; color:var(--ink-soft); max-width:46ch; margin:0 0 28px; }
+  .hero .cta-row{ display:flex; gap:14px; flex-wrap:wrap; }
+  .hero-aside{ border-left:1px solid var(--line); padding-left:28px; display:flex; flex-direction:column; gap:14px; }
+  .hero-aside .stat b{ display:block; font-family: var(--font-display); font-size:1.8rem; color:var(--accent); }
+  .hero-aside .stat span{ font-size:0.78rem; color:var(--ink-soft); }
+  svg.deco{ width:100%; height:auto; color:var(--ink); opacity:0.8; }
+
+  /* ---------- Section shell ---------- */
+  section{ padding:64px 0; border-top:1px solid var(--line); }
+  section .head{ display:flex; justify-content:space-between; align-items:baseline; gap:20px; margin-bottom:36px; flex-wrap:wrap; }
+  section h2{ font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.15rem); font-weight:600; margin:6px 0 0; }
+
+  /* ---------- Services accordion ---------- */
+  .menu-list{ display:flex; flex-direction:column; gap:12px; }
+  details.menu-row{
+    border:1px solid var(--line); border-radius: var(--radius-md);
+    background: var(--paper-raised); box-shadow: var(--shadow-soft);
+    overflow:hidden; transition: border-color .16s ease, transform .16s ease;
+  }
+  details.menu-row:hover{ transform: translateY(-2px); }
+  details.menu-row[open]{ border-color: var(--accent); }
+  details.menu-row summary{
+    list-style:none; cursor:pointer;
+    display:grid; grid-template-columns:1fr auto auto auto; gap:18px; align-items:center;
+    padding: 18px 22px;
+  }
+  details.menu-row summary::-webkit-details-marker{ display:none; }
+  details.menu-row summary .name{ font-family: var(--font-display); font-size:1.12rem; font-weight:600; }
+  details.menu-row summary .dur{ font-size:0.8rem; color:var(--ink-soft); white-space:nowrap; }
+  details.menu-row summary .price{ font-family: var(--font-display); font-size:1.12rem; font-style:italic; color:var(--accent); white-space:nowrap; }
+  details.menu-row summary .chev{
+    width:28px; height:28px; padding:5px; box-sizing:border-box; border-radius:50%; border:1px solid var(--line);
+    color:var(--ink); transition: transform .2s ease, border-color .16s ease; flex-shrink:0;
+  }
+  details.menu-row[open] summary .chev{ transform: rotate(45deg); border-color: var(--accent); color:var(--accent); }
+  .menu-detail{ padding: 0 22px 24px; display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; }
+  .menu-detail p{ margin:0; color:var(--ink-soft); max-width:52ch; }
+  .menu-detail .reserve-link{
+    font-size:0.82rem; font-weight:600; white-space:nowrap; cursor:pointer; padding:9px 18px;
+    background: var(--accent); color: #fff; border:1px solid var(--accent);
+    border-radius: var(--radius-pill); font-family:inherit;
+    transition: background .15s ease;
+  }
+  .menu-detail .reserve-link:hover{ background: var(--accent-hover); border-color: var(--accent-hover); }
+
+  /* ---------- Booking ---------- */
+  .booking{
+    background: var(--paper-raised); border:1px solid var(--line); padding:40px;
+    border-radius: var(--radius-lg); box-shadow: var(--shadow-soft);
+  }
+  @media (max-width:640px){ .booking{ padding:26px 20px; } }
+  .steps{ display:flex; gap:22px; margin-bottom:32px; flex-wrap:wrap; }
+  .step-label{ display:flex; align-items:center; gap:9px; font-size:0.82rem; color:var(--ink-soft); }
+  .step-label .n{ width:22px; height:22px; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-family: var(--font-display); }
+  .step-label.active{ color:var(--ink); }
+  .step-label.active .n{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .step-label.done .n{ background: var(--ink-soft); border-color: var(--ink-soft); color: #fff; }
+
+  .chip-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .chip{
+    border:1px solid var(--line); background: var(--paper-raised); padding:11px 20px;
+    border-radius: var(--radius-pill);
+    font-size:0.86rem; cursor:pointer; text-align:left;
+    transition:border-color .15s ease, background .15s ease, color .15s ease, transform .1s ease;
+  }
+  .chip:active:not(:disabled){ transform: scale(0.97); }
+  .chip .cname{ display:block; }
+  .chip .cmeta{ display:block; font-size:0.74rem; color:var(--ink-soft); margin-top:2px; }
+  .chip:hover{ border-color: var(--accent); }
+  .chip[aria-pressed="true"]{ border-color: var(--accent); background: var(--accent); color: #fff; }
+  .chip[aria-pressed="true"] .cmeta{ color: #fff; opacity:0.85; }
+  .chip:disabled{ opacity:0.3; cursor:not-allowed; text-decoration: line-through; }
+  .chip:disabled:hover{ border-color: var(--line); }
+
+  .field-row{ display:flex; flex-wrap:wrap; gap:18px; margin-top:8px; }
+  .field{ display:flex; flex-direction:column; gap:6px; flex:1; min-width:200px; }
+  .field label{ font-size:0.78rem; color:var(--ink-soft); }
+  .field input{
+    border:1px solid var(--line); border-radius: var(--radius-sm);
+    background: var(--paper-raised); padding:11px 16px; font-size:0.95rem;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .field input:focus{ border-color: var(--focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 20%, transparent); }
+
+  .booking-block{ margin-bottom:30px; }
+  .booking-block > .lbl{ font-size:0.8rem; color:var(--ink-soft); margin-bottom:12px; display:block; }
+
+  /* ---------- Calendar ---------- */
+  .cal{ max-width: 320px; }
+  .cal-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .cal-title{ font-family: var(--font-display); font-size:1.05rem; font-weight:600; text-transform:capitalize; }
+  .cal-nav{
+    width:32px; height:32px; border:1px solid var(--line); border-radius:50%;
+    background: var(--paper-raised); cursor:pointer; display:flex; align-items:center; justify-content:center;
+    font-size:1rem; line-height:1; color:var(--ink); transition:border-color .15s ease, opacity .15s ease;
+  }
+  .cal-nav:hover:not(:disabled){ border-color: var(--accent); color:var(--accent); }
+  .cal-nav:disabled{ opacity:0.3; cursor:not-allowed; }
+  .cal-weekdays{
+    display:grid; grid-template-columns:repeat(7,1fr); text-align:center;
+    font-size:0.66rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.06em;
+    margin-bottom:8px;
+  }
+  .cal-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+  .cal-day{
+    position:relative; aspect-ratio:1; border:1px solid transparent; border-radius:50%;
+    background:transparent; cursor:pointer; font-size:0.86rem; font-variant-numeric:tabular-nums;
+    display:flex; align-items:center; justify-content:center;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .cal-day.empty{ visibility:hidden; cursor:default; }
+  .cal-day:hover:not(:disabled):not(.empty){ border-color: var(--accent); }
+  .cal-day.today:not(.selected)::after{
+    content:""; position:absolute; bottom:5px; width:4px; height:4px; border-radius:50%; background:var(--ink-soft);
+  }
+  .cal-day.available:not(.selected){ color: var(--available); font-weight:700; border-color: color-mix(in srgb, var(--available) 35%, transparent); background: color-mix(in srgb, var(--available) 8%, transparent); }
+  .cal-day.available:not(.selected):hover{ border-color: var(--available); }
+  .cal-day.booked:not(.selected)::before{
+    content:""; position:absolute; top:5px; width:4px; height:4px; border-radius:50%; background:var(--danger);
+  }
+  .cal-day.selected{ background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 12px rgba(10,10,10,0.28); }
+  .cal-day.selected.booked::before{ background: #fff; }
+  .cal-day:disabled{ color: var(--ink-soft); opacity:0.35; cursor:not-allowed; background:transparent; }
+  .cal-legend{ display:flex; flex-direction:column; gap:6px; margin-top:14px; font-size:0.78rem; color:var(--ink-soft); }
+  .cal-legend .item{ display:flex; align-items:center; gap:8px; }
+  .cal-legend .dot{ width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .cal-legend .dot.available{ background:var(--available); }
+  .cal-legend .dot.danger{ background:var(--danger); }
+
+  .confirm-panel{
+    border:1.5px solid var(--accent); border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--accent) 6%, var(--paper-raised));
+    padding:22px 26px; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .confirm-panel .txt b{ display:block; font-family: var(--font-display); font-size:1.15rem; }
+  .confirm-panel .txt span{ font-size:0.84rem; color:var(--ink-soft); }
+
+  .success{ text-align:center; padding:20px 0 4px; }
+  .success .mark-ok{ width:46px; height:46px; margin:0 auto 16px; color:var(--available); }
+  .success h3{ font-family: var(--font-display); font-weight:600; font-size:1.5rem; margin:0 0 8px; }
+  .success p{ color:var(--ink-soft); margin:0 auto 20px; max-width:38ch; }
+  .success .actions{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+  /* ---------- Hours / location ---------- */
+  .hours-grid{ display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+  @media (max-width:720px){ .hours-grid{ grid-template-columns:1fr; gap:32px; } }
+  table.hours{ width:100%; border-collapse:collapse; }
+  table.hours td{ padding:9px 0; border-bottom:1px solid var(--line); font-size:0.92rem; }
+  table.hours td:first-child{ color:var(--ink-soft); }
+  table.hours td:last-child{ text-align:right; }
+  table.hours tr.today td{ font-weight:700; color:var(--accent); }
+  table.hours tr.today td:first-child::before{ content:"— "; }
+
+  .locate address{ font-style:normal; margin-bottom:18px; }
+  .locate .pin-block{
+    border:1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-soft);
+    background: var(--paper-raised);
+    padding:22px; display:flex; gap:14px; align-items:flex-start;
+  }
+  .locate .pin-block svg{ width:26px; height:26px; color:var(--accent); flex-shrink:0; margin-top:2px; }
+
+  /* ---------- Footer ---------- */
+  footer{ border-top:1px solid var(--line); padding:32px 0 50px; }
+  .foot-row{ display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; font-size:0.82rem; color:var(--ink-soft); }
+  .foot-row a{ text-decoration:underline; }
+
+  #owner-panel{ display:none; }
+  #owner-panel.open{ display:block; }
+  .booking-item{ display:flex; justify-content:space-between; gap:16px; padding:14px 0; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .booking-item .who{ font-family: var(--font-display); font-weight:600; }
+  .booking-item .meta{ font-size:0.82rem; color:var(--ink-soft); }
+  .empty-note{ color:var(--ink-soft); font-size:0.9rem; padding:12px 0; }
+
+  [data-reveal]{ opacity:0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease; }
+  [data-reveal].in{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion: reduce){ [data-reveal]{ opacity:1; transform:none; transition:none; } }
+
+  /* ---------- Confirmation modal ---------- */
+  .airtable-modal{
+    position:fixed; inset:0; z-index:100;
+    display:none; align-items:center; justify-content:center; padding:24px;
+  }
+  .airtable-modal.open{ display:flex; }
+  .airtable-modal__backdrop{
+    position:absolute; inset:0; background: rgba(10,10,10,0.45);
+  }
+  .airtable-modal__panel{
+    position:relative; z-index:1;
+    background: var(--paper-raised); border-radius: var(--radius-lg);
+    box-shadow: 0 24px 60px rgba(10,10,10,0.28);
+    width:100%; max-width:420px;
+    padding:36px 30px 30px;
+    text-align:center;
+  }
+  .airtable-modal__close{
+    position:absolute; top:14px; right:14px;
+    width:30px; height:30px; border:1px solid var(--line); border-radius:50%;
+    background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .airtable-modal__close svg{ width:14px; height:14px; }
+  .airtable-modal__close:hover{ border-color: var(--accent); color:var(--accent); }
+  .airtable-modal__mark{ width:50px; height:50px; margin:0 auto 18px; color:var(--available); }
+  .airtable-modal__panel h3{ font-family: var(--font-display); font-weight:600; font-size:1.4rem; margin:0 0 10px; }
+  .airtable-modal__panel p{ color:var(--ink-soft); margin:0 0 6px; font-size:0.94rem; }
+  .airtable-modal__panel .note{ font-size:0.8rem; margin-top:16px; }
+
+  /* ---------- Splash ---------- */
+  .splash{
+    position:fixed; inset:0; z-index:200;
+    background: var(--paper);
+    display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px;
+    animation: splash-hide .6s ease 2.4s forwards;
+    pointer-events:none;
+  }
+  .splash.is-hidden{ display:none; }
+  .splash__mark{ text-align:center; animation: splash-in .8s ease both; padding:0 24px; }
+  .splash__eyebrow{
+    display:block; font-size:0.72rem; letter-spacing:0.3em; text-transform:uppercase;
+    color:var(--ink-soft); margin-bottom:18px;
+  }
+  .splash__name{
+    font-family: var(--font-display); font-size:clamp(2.8rem, 9vw, 5rem); font-weight:700;
+    letter-spacing:0.01em; margin:0;
+  }
+  .splash__slogan{
+    font-family: var(--font-display); font-style:italic; font-weight:500;
+    font-size:clamp(1.05rem, 2.4vw, 1.35rem); color:var(--ink-soft); margin-top:14px;
+  }
+  @keyframes splash-in{ from{ opacity:0; transform:translateY(16px); } to{ opacity:1; transform:none; } }
+  @keyframes splash-hide{ to{ opacity:0; visibility:hidden; } }
+  @media (prefers-reduced-motion: reduce){
+    .splash{ animation: splash-hide 0s 1.2s forwards; }
+    .splash__mark{ animation:none; }
+  }
+</style>
+
+<div class="site">
+
+  <div class="splash" id="splash" aria-hidden="true">
+    <div class="splash__mark">
+      <span class="splash__eyebrow">Elda · Alicante</span>
+      <p class="splash__name">Melena</p>
+      <p class="splash__slogan">El corte que te define.</p>
+    </div>
+  </div>
+
+  <header class="top">
+    <div class="wrap top-row">
+      <a class="brand" href="#top">
+        <span class="mark">Melena</span>
+        <span class="tag">Estudio&nbsp;de&nbsp;peluquería</span>
+      </a>
+      <nav class="links" id="desktop-nav">
+        <a href="#servicios" data-section="servicios">Servicios</a>
+        <a href="#reservar" data-section="reservar">Reservar</a>
+        <a href="#horario" data-section="horario">Horario &amp; dónde estamos</a>
+      </nav>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a class="btn solid" href="#reservar">Reservar cita</a>
+        <button class="hamburger" id="hamburger-btn" aria-label="Abrir menú" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="mobile-menu">
+    <div class="mm-top">
+      <span class="brand"><span class="mark">Melena</span></span>
+      <button class="mm-close" id="mm-close-btn" aria-label="Cerrar menú">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5L5 19" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <nav class="mm-links">
+      <a href="#servicios">Servicios</a>
+      <a href="#reservar">Reservar</a>
+      <a href="#horario">Horario &amp; dónde estamos</a>
+    </nav>
+  </div>
+
+  <main>
+  <div class="wrap">
+    <section class="hero" id="top" style="border-top:none;">
+      <div>
+        <span class="eyebrow">Elda · Calle Torres Quevedo</span>
+        <h1 class="display">Tu próximo corte, <em>sin una sola llamada.</em></h1>
+        <p class="lede">Elige servicio, mira los huecos libres de esta semana y reserva en menos de un minuto. Sin esperas al teléfono, sin colas el sábado por la mañana.</p>
+        <div class="cta-row">
+          <a class="btn solid" href="#reservar">Ver horas disponibles</a>
+          <a class="btn" href="#servicios">Ver precios</a>
+        </div>
+      </div>
+      <div class="hero-aside">
+        <svg class="deco" viewBox="0 0 200 60" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <path d="M4 30c20-22 40-22 56 0s36 22 56 0 36-22 56 0s24 8 24 8" stroke-linecap="round"/>
+          <circle cx="14" cy="30" r="4"/>
+          <circle cx="184" cy="30" r="4"/>
+        </svg>
+        <div class="stat"><b>6</b><span>servicios reservables online</span></div>
+        <div class="stat"><b class="tab-nums">09:30</b><span>primera hora libre casi cualquier día</span></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="wrap">
+    <section id="servicios" data-reveal>
+      <div class="head">
+        <div><span class="eyebrow">La carta</span><h2 class="display">Servicios y precios</h2></div>
+        <span class="eyebrow" style="font-weight:400;">Toca uno para ver el detalle</span>
+      </div>
+      <div class="menu-list" id="service-menu"><!-- filled by JS --></div>
+    </section>
+  </div>
+
+  <div class="wrap">
+    <section id="reservar" data-reveal>
+      <div class="head">
+        <div><span class="eyebrow">Reserva online</span><h2 class="display">Elige día y hora</h2></div>
+      </div>
+
+      <div class="booking">
+        <div class="steps">
+          <div class="step-label" id="step-label-1"><span class="n">1</span> Servicio</div>
+          <div class="step-label" id="step-label-2"><span class="n">2</span> Fecha</div>
+          <div class="step-label" id="step-label-3"><span class="n">3</span> Hora</div>
+          <div class="step-label" id="step-label-4"><span class="n">4</span> Tus datos</div>
+        </div>
+
+        <div id="booking-form">
+          <div class="booking-block">
+            <span class="lbl">1. ¿Qué te vas a hacer?</span>
+            <div class="chip-grid" id="service-chips" role="group" aria-label="Elegir servicio"></div>
+          </div>
+
+          <div class="booking-block">
+            <span class="lbl">2. ¿Qué día te viene bien? (cerramos domingo y lunes)</span>
+            <div class="cal">
+              <div class="cal-head">
+                <button type="button" class="cal-nav" id="cal-prev" aria-label="Mes anterior">‹</button>
+                <span class="cal-title" id="cal-title"></span>
+                <button type="button" class="cal-nav" id="cal-next" aria-label="Mes siguiente">›</button>
+              </div>
+              <div class="cal-weekdays"><span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+              <div class="cal-grid" id="cal-grid"></div>
+              <div class="cal-legend">
+                <span class="item"><span class="dot available"></span> Día con huecos libres</span>
+                <span class="item"><span class="dot danger"></span> Ya hay alguna reserva ese día</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="booking-block">
+            <span class="lbl">3. Horas libres ese día</span>
+            <div class="chip-grid" id="time-chips" role="group" aria-label="Elegir hora"></div>
+          </div>
+
+          <div class="booking-block">
+            <span class="lbl">4. Tus datos para confirmar</span>
+            <div class="field-row">
+              <div class="field"><label for="name-input">Nombre</label><input type="text" id="name-input" autocomplete="name" placeholder="Cómo te llamamos"></div>
+              <div class="field"><label for="phone-input">Teléfono</label><input type="tel" id="phone-input" autocomplete="tel" placeholder="Para confirmarte por WhatsApp"></div>
+            </div>
+          </div>
+
+          <div class="confirm-panel">
+            <div class="txt" id="confirm-summary">
+              <b>Selecciona servicio, fecha y hora</b>
+              <span>El resumen de tu cita aparecerá aquí</span>
+            </div>
+            <button class="btn solid" id="confirm-btn" disabled>Confirmar reserva</button>
+          </div>
+        </div>
+
+        <div id="booking-success" style="display:none;">
+          <div class="success">
+            <svg class="mark-ok" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <circle cx="24" cy="24" r="21"/><path d="M15 24l6.5 6.5L34 17" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3 class="display">Reserva guardada</h3>
+            <p id="success-text">Te esperamos.</p>
+            <div class="actions">
+              <a class="btn" id="whatsapp-link" href="#" target="_blank" rel="noopener">Avisar también por WhatsApp</a>
+              <button class="btn" id="new-booking-btn">Hacer otra reserva</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="wrap">
+    <section id="horario" data-reveal>
+      <div class="head">
+        <div><span class="eyebrow">Antes de venir</span><h2 class="display">Horario &amp; dónde estamos</h2></div>
+      </div>
+      <div class="hours-grid">
+        <table class="hours" id="hours-table"><!-- filled by JS --></table>
+        <div class="locate">
+          <address>Calle Torres Quevedo, 18 — 03600 Elda (Alicante)<br><span style="color:var(--ink-soft)">Tel. 965 38 XX XX</span></address>
+          <div class="pin-block">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s7-7.2 7-12a7 7 0 10-14 0c0 4.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <div><b>A dos minutos de la Plaza Sagrado Corazón</b><br><span style="color:var(--ink-soft); font-size:0.86rem;">Parking en la propia calle. Sin barreras de acceso.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  </main>
+
+  <div class="airtable-modal" id="airtable-modal" aria-hidden="true">
+    <div class="airtable-modal__backdrop" id="airtable-modal-backdrop"></div>
+    <div class="airtable-modal__panel" role="dialog" aria-modal="true" aria-label="Cita confirmada">
+      <button type="button" class="airtable-modal__close" id="airtable-modal-close" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5L5 19" stroke-linecap="round"/></svg>
+      </button>
+      <svg class="airtable-modal__mark" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+        <circle cx="24" cy="24" r="21"/><path d="M15 24l6.5 6.5L34 17" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h3 class="display">¡Cita confirmada!</h3>
+      <p id="modal-summary">Te esperamos.</p>
+      <p class="note">Ya hemos guardado tu cita en la agenda del salón automáticamente.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="wrap foot-row">
+      <span>© Melena — Estudio de peluquería, Elda</span>
+      <a href="javascript:void(0)" id="owner-toggle">Panel del salón (demo)</a>
+    </div>
+    <div class="wrap" id="owner-panel">
+      <section style="border-top:1px solid var(--line); padding-top:32px;">
+        <div class="head">
+          <div><span class="eyebrow">Solo para el salón — vista de ejemplo</span><h2 class="display" style="font-size:1.5rem;">Reservas recibidas en este navegador</h2></div>
+          <button class="btn" id="clear-demo-btn">Vaciar reservas de prueba</button>
+        </div>
+        <div id="owner-list"></div>
+        <p class="empty-note" style="margin-top:14px;">Nota: esto es una demo — las reservas se guardan solo en este navegador. Una versión en producción guardaría las citas en un servidor para que el salón las viera desde cualquier dispositivo.</p>
+      </section>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var SERVICES = [
+    { id:"corte-senora", name:"Corte de señora", desc:"Lavado, corte a medida y secado con cepillo. Incluye diagnóstico de tu tipo de cabello.", duration:45, price:18 },
+    { id:"corte-caballero", name:"Corte de caballero", desc:"Máquina y tijera, arreglo de barba incluido.", duration:30, price:12 },
+    { id:"peinado", name:"Lavado + peinado", desc:"Para el día a día o antes de una ocasión especial.", duration:30, price:15 },
+    { id:"color", name:"Color / tinte", desc:"Color de raíz a puntas con producto profesional.", duration:90, price:45 },
+    { id:"mechas", name:"Mechas / balayage", desc:"Técnica personalizada según tu base y el resultado que busques.", duration:120, price:65 },
+    { id:"tratamiento", name:"Tratamiento capilar", desc:"Hidratación profunda para cabello dañado o seco.", duration:45, price:25 }
+  ];
+
+  var HOURS = {
+    1: null,
+    2: [["09:30","13:30"],["16:30","20:00"]],
+    3: [["09:30","13:30"],["16:30","20:00"]],
+    4: [["09:30","13:30"],["16:30","20:00"]],
+    5: [["09:30","13:30"],["16:30","20:00"]],
+    6: [["09:30","14:00"]],
+    0: null
+  };
+  var DAY_NAMES = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
+  var STORE_KEY = "melena_demo_bookings_v1";
+  var OWNER_WHATSAPP = "34610318236";
+  var MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/7to0bymncmbi23xrxlfv8ih6qmy7dwgd";
+  var state = { service:null, date:null, time:null };
+
+  function sendToMondayViaMake(booking){
+    fetch(MAKE_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nombre: booking.name,
+        telefono: booking.phone,
+        servicio: booking.service,
+        fecha: booking.date,
+        hora: booking.time,
+        duracion: booking.duration,
+        precio: booking.price
+      })
+    }).catch(function(err){ console.error("No se pudo avisar a la agenda:", err); });
+  }
+
+  var airtableModal = document.getElementById("airtable-modal");
+  var modalSummary = document.getElementById("modal-summary");
+  function openAirtableModal(summaryText){
+    modalSummary.textContent = summaryText;
+    airtableModal.classList.add("open");
+  }
+  function closeAirtableModal(){
+    airtableModal.classList.remove("open");
+  }
+  document.getElementById("airtable-modal-close").addEventListener("click", closeAirtableModal);
+  document.getElementById("airtable-modal-backdrop").addEventListener("click", closeAirtableModal);
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") closeAirtableModal(); });
+
+  function euros(n){ return n.toLocaleString("es-ES") + " €"; }
+  function pad(n){ return n<10 ? "0"+n : ""+n; }
+  function todayISO(){ var d=new Date(); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+  function loadBookings(){ try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; } catch(e){ return []; } }
+  function saveBookings(list){ localStorage.setItem(STORE_KEY, JSON.stringify(list)); }
+
+  // ---------- Services accordion ----------
+  var menuEl = document.getElementById("service-menu");
+  SERVICES.forEach(function(s){
+    var det = document.createElement("details");
+    det.className = "menu-row";
+    det.innerHTML =
+      '<summary>' +
+        '<span class="name">'+s.name+'</span>' +
+        '<span class="dur tab-nums">'+s.duration+' min</span>' +
+        '<span class="price tab-nums">'+euros(s.price)+'</span>' +
+        '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>' +
+      '</summary>' +
+      '<div class="menu-detail">' +
+        '<p>'+s.desc+'</p>' +
+        '<button type="button" class="reserve-link" data-service="'+s.id+'">Reservar</button>' +
+      '</div>';
+    menuEl.appendChild(det);
+  });
+  menuEl.addEventListener("click", function(e){
+    var btn = e.target.closest(".reserve-link");
+    if (!btn) return;
+    e.preventDefault();
+    selectServiceById(btn.dataset.service);
+    document.getElementById("reservar").scrollIntoView({ behavior:"smooth", block:"start" });
+  });
+
+  // ---------- Service chips ----------
+  var chipsEl = document.getElementById("service-chips");
+  SERVICES.forEach(function(s){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip";
+    b.dataset.id = s.id;
+    b.setAttribute("aria-pressed","false");
+    b.innerHTML = '<span class="cname">'+s.name+'</span><span class="cmeta">'+s.duration+' min · '+euros(s.price)+'</span>';
+    b.addEventListener("click", function(){ applyServiceSelection(s, b); });
+    chipsEl.appendChild(b);
+  });
+  function applyServiceSelection(s, btn){
+    state.service = s;
+    Array.prototype.forEach.call(chipsEl.children, function(c){ c.setAttribute("aria-pressed","false"); });
+    btn.setAttribute("aria-pressed","true");
+    state.time = null;
+    renderCalendar();
+    renderTimeSlots();
+    updateConfirm();
+  }
+  function selectServiceById(id){
+    var svc = SERVICES.filter(function(s){ return s.id === id; })[0];
+    var btn = chipsEl.querySelector('[data-id="'+id+'"]');
+    if (svc && btn) applyServiceSelection(svc, btn);
+  }
+
+  // ---------- Calendar ----------
+  var MONTH_NAMES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+  var todayIso = todayISO();
+  var todayDate = new Date(todayIso + "T00:00:00");
+  var viewMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 1);
+
+  function isoOf(y, m, day){ return y + "-" + pad(m+1) + "-" + pad(day); }
+  function isBookedDay(iso){ return loadBookings().some(function(b){ return b.date === iso; }); }
+
+  function hasFreeSlot(iso, duration){
+    var dow = new Date(iso + "T00:00:00").getDay();
+    var ranges = HOURS[dow];
+    if (!ranges) return false;
+    var taken = loadBookings().filter(function(b){ return b.date === iso; });
+    for (var r = 0; r < ranges.length; r++){
+      var start = timeToMinutes(ranges[r][0]), end = timeToMinutes(ranges[r][1]);
+      for (var t = start; t + duration <= end; t += 15){
+        var endT = t + duration;
+        var overlaps = taken.some(function(b){
+          var bStart = timeToMinutes(b.time); var bEnd = bStart + b.duration;
+          return t < bEnd && endT > bStart;
+        });
+        if (!overlaps) return true;
+      }
+    }
+    return false;
+  }
+
+  function renderCalendar(){
+    document.getElementById("cal-title").textContent = MONTH_NAMES[viewMonth.getMonth()] + " de " + viewMonth.getFullYear();
+    var isCurrentMonth = viewMonth.getFullYear() === todayDate.getFullYear() && viewMonth.getMonth() === todayDate.getMonth();
+    document.getElementById("cal-prev").disabled = isCurrentMonth;
+
+    var grid = document.getElementById("cal-grid");
+    grid.innerHTML = "";
+    var y = viewMonth.getFullYear(), m = viewMonth.getMonth();
+    var firstDow = (new Date(y, m, 1).getDay() + 6) % 7; // 0=lunes
+    var daysInMonth = new Date(y, m + 1, 0).getDate();
+
+    for (var i = 0; i < firstDow; i++){
+      var empty = document.createElement("span");
+      empty.className = "cal-day empty";
+      grid.appendChild(empty);
+    }
+
+    for (var day = 1; day <= daysInMonth; day++){
+      var iso = isoOf(y, m, day);
+      var dow = new Date(y, m, day).getDay();
+      var isPast = iso < todayIso;
+      var isClosed = !HOURS[dow];
+      var booked = isBookedDay(iso);
+      var duration = state.service ? state.service.duration : 30;
+      var full = !isPast && !isClosed && !hasFreeSlot(iso, duration);
+
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "cal-day";
+      if (iso === todayIso) btn.classList.add("today");
+      if (booked) btn.classList.add("booked");
+      if (iso === state.date) btn.classList.add("selected");
+      if (!isPast && !isClosed && !full) btn.classList.add("available");
+      btn.textContent = day;
+
+      if (isPast || isClosed || full){
+        btn.disabled = true;
+        btn.title = isPast ? "Fecha pasada" : (isClosed ? "Cerrado ese día" : "Completo para este servicio");
+      } else {
+        btn.title = booked ? "Ya hay alguna reserva ese día — aún quedan huecos" : "";
+        btn.addEventListener("click", function(){
+          var clickedIso = this.dataset.iso;
+          state.date = clickedIso; state.time = null;
+          renderCalendar(); renderTimeSlots(); updateConfirm();
+        });
+      }
+      btn.dataset.iso = iso;
+      grid.appendChild(btn);
+    }
+  }
+
+  document.getElementById("cal-prev").addEventListener("click", function(){
+    viewMonth = new Date(viewMonth.getFullYear(), viewMonth.getMonth() - 1, 1);
+    renderCalendar();
+  });
+  document.getElementById("cal-next").addEventListener("click", function(){
+    viewMonth = new Date(viewMonth.getFullYear(), viewMonth.getMonth() + 1, 1);
+    renderCalendar();
+  });
+  renderCalendar();
+
+  function timeToMinutes(t){ var p=t.split(":"); return (+p[0])*60 + (+p[1]); }
+  function minutesToTime(m){ return pad(Math.floor(m/60)) + ":" + pad(m%60); }
+
+  function renderTimeSlots(){
+    var wrap = document.getElementById("time-chips");
+    wrap.innerHTML = "";
+    if (!state.service || !state.date){
+      wrap.innerHTML = '<p class="empty-note">Elige antes un servicio y una fecha.</p>';
+      return;
+    }
+    var d = new Date(state.date + "T00:00:00");
+    var ranges = HOURS[d.getDay()];
+    var duration = state.service.duration;
+    var taken = loadBookings().filter(function(b){ return b.date === state.date; });
+    var slots = [];
+    ranges.forEach(function(r){
+      var start = timeToMinutes(r[0]); var end = timeToMinutes(r[1]);
+      for (var t = start; t + duration <= end; t += 15){ slots.push(t); }
+    });
+    if (!slots.length){
+      wrap.innerHTML = '<p class="empty-note">Ese servicio no cabe en el horario de ese día. Prueba otra fecha.</p>';
+      return;
+    }
+    var freeSlots = slots.filter(function(startMin){
+      var endMin = startMin + duration;
+      return !taken.some(function(b){
+        var bStart = timeToMinutes(b.time); var bEnd = bStart + b.duration;
+        return startMin < bEnd && endMin > bStart;
+      });
+    });
+
+    if (!freeSlots.length){
+      wrap.innerHTML = '<p class="empty-note">No quedan horas libres ese día para este servicio. Prueba otra fecha.</p>';
+      return;
+    }
+
+    freeSlots.forEach(function(startMin){
+      var label = minutesToTime(startMin);
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.style.textAlign = "center";
+      b.setAttribute("aria-pressed","false");
+      b.innerHTML = '<span class="cname tab-nums">'+label+'</span>';
+      b.addEventListener("click", function(){
+        state.time = label;
+        Array.prototype.forEach.call(wrap.children, function(c){ c.setAttribute("aria-pressed","false"); });
+        b.setAttribute("aria-pressed","true");
+        updateConfirm();
+      });
+      wrap.appendChild(b);
+    });
+  }
+  renderTimeSlots();
+
+  var nameInput = document.getElementById("name-input");
+  var phoneInput = document.getElementById("phone-input");
+  [nameInput, phoneInput].forEach(function(el){ el.addEventListener("input", updateConfirm); });
+
+  function setStep(n, done){
+    var el = document.getElementById("step-label-"+n);
+    el.classList.toggle("done", done);
+    el.classList.toggle("active", !done);
+  }
+  function formattedDate(iso){
+    var d = new Date(iso + "T00:00:00");
+    return DAY_NAMES[d.getDay()] + " " + d.getDate() + " de " +
+      ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"][d.getMonth()];
+  }
+
+  var confirmBtn = document.getElementById("confirm-btn");
+  var confirmSummary = document.getElementById("confirm-summary");
+
+  function updateConfirm(){
+    setStep(1, !!state.service); setStep(2, !!state.date); setStep(3, !!state.time);
+    setStep(4, !!(nameInput.value.trim() && phoneInput.value.trim()));
+    var ready = state.service && state.date && state.time && nameInput.value.trim() && phoneInput.value.trim();
+    confirmBtn.disabled = !ready;
+    if (state.service && state.date && state.time){
+      confirmSummary.innerHTML = '<b>'+state.service.name+' · '+euros(state.service.price)+'</b><span>'+formattedDate(state.date)+' a las '+state.time+'</span>';
+    } else {
+      confirmSummary.innerHTML = '<b>Selecciona servicio, fecha y hora</b><span>El resumen de tu cita aparecerá aquí</span>';
+    }
+  }
+
+  confirmBtn.addEventListener("click", function(){
+    var booking = { service: state.service.name, duration: state.service.duration, price: state.service.price,
+      date: state.date, time: state.time, name: nameInput.value.trim(), phone: phoneInput.value.trim(), createdAt: new Date().toISOString() };
+    var bookings = loadBookings();
+    bookings.push(booking);
+    saveBookings(bookings);
+    document.getElementById("booking-form").style.display = "none";
+    document.getElementById("booking-success").style.display = "block";
+    document.getElementById("success-text").textContent =
+      nameInput.value.trim() + ", te esperamos el " + formattedDate(state.date) + " a las " + state.time + " para tu " + state.service.name.toLowerCase() + ".";
+
+    sendToMondayViaMake(booking);
+    openAirtableModal(
+      nameInput.value.trim() + ", te esperamos el " + formattedDate(state.date) + " a las " + state.time + " para tu " + state.service.name.toLowerCase() + "."
+    );
+
+    var msg = "Nueva reserva por la web — " + nameInput.value.trim() + " ha reservado " + state.service.name +
+      " el " + formattedDate(state.date) + " a las " + state.time + ". Teléfono de contacto: " + phoneInput.value.trim() + ".";
+    var waUrl = "https://wa.me/" + OWNER_WHATSAPP + "?text=" + encodeURIComponent(msg);
+    document.getElementById("whatsapp-link").href = waUrl;
+
+    renderCalendar();
+    renderOwnerPanel();
+  });
+
+  document.getElementById("new-booking-btn").addEventListener("click", function(){
+    state = { service:null, date:null, time:null };
+    nameInput.value = ""; phoneInput.value = "";
+    Array.prototype.forEach.call(chipsEl.children, function(c){ c.setAttribute("aria-pressed","false"); });
+    renderCalendar(); renderTimeSlots(); updateConfirm();
+    document.getElementById("booking-form").style.display = "block";
+    document.getElementById("booking-success").style.display = "none";
+  });
+
+  // ---------- Hours table ----------
+  var hoursTable = document.getElementById("hours-table");
+  var todayDow = new Date().getDay();
+  for (var dow = 1; dow <= 6; dow++){ addHourRow(dow); }
+  addHourRow(0);
+  function addHourRow(dow){
+    var tr = document.createElement("tr");
+    if (dow === todayDow) tr.className = "today";
+    var ranges = HOURS[dow];
+    var text = ranges ? ranges.map(function(r){ return r[0]+"–"+r[1]; }).join(" / ") : "Cerrado";
+    tr.innerHTML = "<td>"+DAY_NAMES[dow]+(dow===todayDow ? " · hoy" : "")+"</td><td class=\"tab-nums\">"+text+"</td>";
+    hoursTable.appendChild(tr);
+  }
+
+  // ---------- Owner panel ----------
+  var ownerPanel = document.getElementById("owner-panel");
+  document.getElementById("owner-toggle").addEventListener("click", function(){
+    ownerPanel.classList.toggle("open");
+    if (ownerPanel.classList.contains("open")) renderOwnerPanel();
+  });
+  document.getElementById("clear-demo-btn").addEventListener("click", function(){
+    if (confirm("¿Vaciar todas las reservas de prueba guardadas en este navegador?")){
+      saveBookings([]); renderOwnerPanel(); renderTimeSlots(); renderCalendar();
+    }
+  });
+  function renderOwnerPanel(){
+    var list = loadBookings().slice().sort(function(a,b){ return (a.date+a.time).localeCompare(b.date+b.time); });
+    var el = document.getElementById("owner-list");
+    el.innerHTML = "";
+    if (!list.length){
+      el.innerHTML = '<p class="empty-note">Aún no hay reservas de prueba. Reserva una cita arriba para ver cómo aparece aquí.</p>';
+      return;
+    }
+    list.forEach(function(b){
+      var row = document.createElement("div");
+      row.className = "booking-item";
+      row.innerHTML = '<div><span class="who">'+b.name+'</span><br><span class="meta">'+b.service+' · '+b.duration+' min</span></div>' +
+        '<div class="meta tab-nums">'+formattedDate(b.date)+' · '+b.time+'<br>'+b.phone+'</div>';
+      el.appendChild(row);
+    });
+  }
+
+  // ---------- Mobile menu ----------
+  var mobileMenu = document.getElementById("mobile-menu");
+  var hamburgerBtn = document.getElementById("hamburger-btn");
+  function openMenu(){ mobileMenu.classList.add("open"); hamburgerBtn.setAttribute("aria-expanded","true"); document.body.style.overflow = "hidden"; }
+  function closeMenu(){ mobileMenu.classList.remove("open"); hamburgerBtn.setAttribute("aria-expanded","false"); document.body.style.overflow = ""; }
+  hamburgerBtn.addEventListener("click", openMenu);
+  document.getElementById("mm-close-btn").addEventListener("click", closeMenu);
+  document.querySelectorAll("#mobile-menu .mm-links a").forEach(function(a){ a.addEventListener("click", closeMenu); });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") closeMenu(); });
+
+  // ---------- Scrollspy nav ----------
+  var navLinks = document.querySelectorAll("#desktop-nav a[data-section]");
+  var spySections = ["servicios","reservar","horario"].map(function(id){ return document.getElementById(id); });
+  if ("IntersectionObserver" in window){
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          navLinks.forEach(function(a){ a.classList.toggle("current", a.dataset.section === entry.target.id); });
+        }
+      });
+    }, { rootMargin: "-40% 0px -50% 0px" });
+    spySections.forEach(function(s){ if (s) spy.observe(s); });
+  }
+
+  // ---------- Scroll reveal ----------
+  if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches && "IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) e.target.classList.add("in"); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll("[data-reveal]").forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll("[data-reveal]").forEach(function(el){ el.classList.add("in"); });
+  }
+
+  // ---------- Splash ----------
+  var splashEl = document.getElementById("splash");
+  if (splashEl){
+    var splashDelay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 1300 : 2600;
+    setTimeout(function(){ splashEl.classList.add("is-hidden"); }, splashDelay);
+  }
+
+  updateConfirm();
+})();
+</script>
